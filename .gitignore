@@ -1,0 +1,11 @@
+target
+*.sublime-*
+acceptance/*.log
+acceptance/*.pid
+acceptance/*.txt
+
+# IntelliJ
+.idea/
+*.iml
+*.ipr
+*.iws
