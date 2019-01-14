@@ -1,4 +1,4 @@
-package io.github.drautb.swf.api;
+package io.github.drautb.swf.decider.api;
 
 import com.amazonaws.services.simpleworkflow.flow.annotations.Execute;
 import com.amazonaws.services.simpleworkflow.flow.annotations.Workflow;

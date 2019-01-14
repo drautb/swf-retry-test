@@ -1,4 +1,4 @@
-package io.github.drautb.swf.api;
+package io.github.drautb.swf.activity.api;
 
 import com.amazonaws.services.simpleworkflow.flow.annotations.Activities;
 import com.amazonaws.services.simpleworkflow.flow.annotations.ActivityRegistrationOptions;
@@ -14,7 +14,8 @@ import io.github.drautb.swf.SwfRetryTest;
 public interface Activity {
 
   @ExponentialRetry(initialRetryIntervalSeconds = SwfRetryTest.INITIAL_RETRY_INTERVAL_SECONDS,
-      maximumAttempts = SwfRetryTest.MAX_ATTEMPTS)
+      maximumAttempts = SwfRetryTest.MAX_ATTEMPTS,
+      exceptionsToRetry = RuntimeException.class)
   void spin();
 
 }
