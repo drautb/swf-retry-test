@@ -47,6 +47,11 @@
         <version>${aws-java-sdk.version}</version>
       </dependency>
       <dependency>
+        <groupId>com.amazonaws</groupId>
+        <artifactId>aws-java-sdk-route53</artifactId>
+        <version>${aws-java-sdk.version}</version>
+      </dependency>
+      <dependency>
         <groupId>org.aspectj</groupId>
         <artifactId>aspectjrt</artifactId>
         <version>${aspectjrt.version}</version>
@@ -68,5 +73,64 @@
       </dependency>
     </dependencies>
   </dependencyManagement>
+
+  <build>
+    <pluginManagement>
+      <plugins>
+        <plugin>
+          <groupId>org.codehaus.mojo</groupId>
+          <artifactId>aspectj-maven-plugin</artifactId>
+          <version>${aspectj-maven-plugin.version}</version>
+          <dependencies>
+            <dependency>
+              <groupId>org.aspectj</groupId>
+              <artifactId>aspectjrt</artifactId>
+              <version>${aspectjrt.version}</version>
+            </dependency>
+            <dependency>
+              <groupId>org.aspectj</groupId>
+              <artifactId>aspectjtools</artifactId>
+              <version>${aspectjrt.version}</version>
+            </dependency>
+          </dependencies>
+          <executions>
+            <execution>
+              <goals>
+                <goal>compile</goal>
+                <!-- use this goal to weave all your main classes -->
+                <goal>test-compile</goal>
+                <!-- use this goal to weave all your test classes -->
+              </goals>
+            </execution>
+          </executions>
+          <configuration>
+            <source>${java.compiler.version}</source>
+            <target>${java.compiler.version}</target>
+            <complianceLevel>${java.compiler.version}</complianceLevel>
+            <aspectLibraries>
+              <aspectLibrary>
+                <groupId>com.amazonaws</groupId>
+                <artifactId>aws-java-sdk-swf-libraries</artifactId>
+              </aspectLibrary>
+              <aspectLibrary>
+                <groupId>org.familysearch.paas</groupId>
+                <artifactId>paas-sps-common</artifactId>
+              </aspectLibrary>
+            </aspectLibraries>
+            <showWeaveInfo>false</showWeaveInfo>
+            <verbose>false</verbose>
+            <Xlint>ignore</Xlint>
+            <proc>none</proc>
+          </configuration>
+        </plugin>
+        <plugin>
+          <artifactId>maven-compiler-plugin</artifactId>
+          <configuration>
+            <useIncrementalCompilation>false</useIncrementalCompilation>
+          </configuration>
+        </plugin>
+      </plugins>
+    </pluginManagement>
+  </build>
 
 </project>

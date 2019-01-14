@@ -28,6 +28,10 @@
       <artifactId>aws-java-sdk-simpleworkflow</artifactId>
     </dependency>
     <dependency>
+      <groupId>com.amazonaws</groupId>
+      <artifactId>aws-java-sdk-route53</artifactId>
+    </dependency>
+    <dependency>
       <groupId>org.aspectj</groupId>
       <artifactId>aspectjrt</artifactId>
     </dependency>
@@ -54,55 +58,8 @@
     <finalName>${project.artifactId}</finalName>
     <plugins>
       <plugin>
-        <artifactId>maven-compiler-plugin</artifactId>
-        <version>${maven-compiler-plugin.version}</version>
-        <configuration>
-          <useIncrementalCompilation>false</useIncrementalCompilation>
-        </configuration>
-      </plugin>
-      <plugin>
         <groupId>org.codehaus.mojo</groupId>
         <artifactId>aspectj-maven-plugin</artifactId>
-        <version>${aspectj-maven-plugin.version}</version>
-        <dependencies>
-          <dependency>
-            <groupId>org.aspectj</groupId>
-            <artifactId>aspectjrt</artifactId>
-            <version>${aspectjrt.version}</version>
-          </dependency>
-          <dependency>
-            <groupId>org.aspectj</groupId>
-            <artifactId>aspectjtools</artifactId>
-            <version>${aspectjrt.version}</version>
-          </dependency>
-        </dependencies>
-        <executions>
-          <execution>
-            <goals>
-              <goal>compile</goal>
-            </goals>
-          </execution>
-        </executions>
-        <configuration>
-          <source>${java.compiler.version}</source>
-          <target>${java.compiler.version}</target>
-          <complianceLevel>${java.compiler.version}</complianceLevel>
-          <aspectLibraries>
-            <aspectLibrary>
-              <groupId>com.amazonaws</groupId>
-              <artifactId>aws-java-sdk-swf-libraries</artifactId>
-            </aspectLibrary>
-          </aspectLibraries>
-          <sources>
-            <source>
-              <basedir>src/main/java</basedir>
-            </source>
-          </sources>
-          <showWeaveInfo>true</showWeaveInfo>
-          <verbose>true</verbose>
-          <Xlint>ignore</Xlint>
-          <proc>none</proc>
-        </configuration>
       </plugin>
       <plugin>
         <groupId>org.codehaus.cargo</groupId>
