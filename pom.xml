@@ -23,13 +23,15 @@
     <aspectjrt.version>1.8.8</aspectjrt.version>
     <aspectj-maven-plugin.version>1.8</aspectj-maven-plugin.version>
     <aws-swf-build-tools.version>1.0</aws-swf-build-tools.version>
-    <aws-java-sdk.version>1.11.342</aws-java-sdk.version>
+    <aws-java-sdk.version>1.11.49</aws-java-sdk.version>
+    <aws-java-sdk-swf-libraries.version>1.11.22</aws-java-sdk-swf-libraries.version>
     <freemarker.version>2.3.23</freemarker.version>
     <cargo-maven2-plugin.version>1.4.10</cargo-maven2-plugin.version>
     <javax.servlet-api.version>3.1.0</javax.servlet-api.version>
     <junit.version>4.12</junit.version>
     <logback-classic.version>1.1.2</logback-classic.version>
     <maven-compiler-plugin.version>3.6.1</maven-compiler-plugin.version>
+    <paas-sps-common.version>9.0.b254</paas-sps-common.version>
 
     <mainClass>Launcher</mainClass>
   </properties>
@@ -40,6 +42,11 @@
         <groupId>com.amazonaws</groupId>
         <artifactId>aws-swf-build-tools</artifactId>
         <version>${aws-swf-build-tools.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>com.amazonaws</groupId>
+        <artifactId>aws-java-sdk-swf-libraries</artifactId>
+        <version>${aws-java-sdk-swf-libraries.version}</version>
       </dependency>
       <dependency>
         <groupId>com.amazonaws</groupId>
@@ -64,7 +71,7 @@
       <dependency>
         <groupId>org.familysearch.paas</groupId>
         <artifactId>paas-sps-common</artifactId>
-        <version>9.0.b263</version>
+        <version>${paas-sps-common.version}</version>
       </dependency>
       <dependency>
         <groupId>javax.servlet</groupId>

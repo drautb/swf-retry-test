@@ -6,6 +6,7 @@ import com.amazonaws.services.simpleworkflow.flow.ActivityExecutionContextProvid
 import io.github.drautb.swf.activity.api.Activity;
 import org.familysearch.paas.sps.common.annotations.AdaptExceptionForSwf;
 
+@AdaptExceptionForSwf
 public class ActivityImpl implements Activity {
 
   public void spin() {
