@@ -1,11 +1,11 @@
-package io.github.drautb.swf.decider.api;
+package io.github.drautb.swf.test.api;
 
 import com.amazonaws.services.simpleworkflow.flow.annotations.Execute;
 import com.amazonaws.services.simpleworkflow.flow.annotations.Workflow;
 import com.amazonaws.services.simpleworkflow.flow.annotations.WorkflowRegistrationOptions;
 import com.amazonaws.services.simpleworkflow.flow.core.Promise;
 
-import io.github.drautb.swf.SwfRetryTest;
+import io.github.drautb.swf.test.SwfRetryTest;
 
 @Workflow
 @WorkflowRegistrationOptions(defaultExecutionStartToCloseTimeoutSeconds = SwfRetryTest.START_TO_CLOSE_TIMEOUT,

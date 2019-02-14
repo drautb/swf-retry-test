@@ -1,10 +1,10 @@
-package io.github.drautb.swf.decider.impl;
+package io.github.drautb.swf.test.impl;
 
 import com.amazonaws.services.simpleworkflow.flow.DynamicActivitiesClient;
 import com.amazonaws.services.simpleworkflow.flow.core.Promise;
 import com.amazonaws.services.simpleworkflow.model.ActivityType;
-import io.github.drautb.swf.SwfRetryTest;
-import io.github.drautb.swf.decider.api.DynamicClientDecider;
+import io.github.drautb.swf.test.SwfRetryTest;
+import io.github.drautb.swf.test.api.DynamicClientDecider;
 import org.familysearch.paas.sps.common.DynamicActivitiesClientFactory;
 
 public class DynamicClientDeciderImpl implements DynamicClientDecider {

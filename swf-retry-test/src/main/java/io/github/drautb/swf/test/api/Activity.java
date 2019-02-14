@@ -1,10 +1,10 @@
-package io.github.drautb.swf.activity.api;
+package io.github.drautb.swf.test.api;
 
 import com.amazonaws.services.simpleworkflow.flow.annotations.Activities;
 import com.amazonaws.services.simpleworkflow.flow.annotations.ActivityRegistrationOptions;
 import com.amazonaws.services.simpleworkflow.flow.annotations.ExponentialRetry;
 
-import io.github.drautb.swf.SwfRetryTest;
+import io.github.drautb.swf.test.SwfRetryTest;
 
 @ActivityRegistrationOptions(defaultTaskScheduleToStartTimeoutSeconds = SwfRetryTest.SCHEDULE_TO_START_TIMEOUT,
                              defaultTaskStartToCloseTimeoutSeconds = SwfRetryTest.START_TO_CLOSE_TIMEOUT,
