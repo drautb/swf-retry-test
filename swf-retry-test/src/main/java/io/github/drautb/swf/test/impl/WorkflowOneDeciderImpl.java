@@ -23,10 +23,10 @@ public class WorkflowOneDeciderImpl implements WorkflowOneDecider {
 
   private Settable<Void> signalReceived = new Settable<>();
 
-  public void run() {
+  public Promise<Void> run() {
     Promise<Void> timer = startDaemonTimer(300);
     OrPromise signalOrTimer = new OrPromise(timer, signalReceived);
-    processNextStep(signalOrTimer);
+    return processNextStep(signalOrTimer);
   }
 
   @Asynchronous(daemon = true)
@@ -37,14 +37,14 @@ public class WorkflowOneDeciderImpl implements WorkflowOneDecider {
 
 
   @Asynchronous
-  private void processNextStep(Promise<?> waitFor) {
+  private Promise<Void> processNextStep(Promise<?> waitFor) {
     if (!signalReceived.isReady()) {
       // No signal was received, so skip everything and finish now.
-      return;
+      return Promise.Void();
     }
 
     // Otherwise, continue with the rest of the workflow.
-    activityClient.spin();
+    return activityClient.spin();
   }
 
   @Asynchronous

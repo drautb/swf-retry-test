@@ -4,6 +4,7 @@ import com.amazonaws.services.simpleworkflow.flow.annotations.Execute;
 import com.amazonaws.services.simpleworkflow.flow.annotations.Signal;
 import com.amazonaws.services.simpleworkflow.flow.annotations.Workflow;
 import com.amazonaws.services.simpleworkflow.flow.annotations.WorkflowRegistrationOptions;
+import com.amazonaws.services.simpleworkflow.flow.core.Promise;
 import io.github.drautb.swf.test.SwfRetryTest;
 
 /**
@@ -15,7 +16,7 @@ import io.github.drautb.swf.test.SwfRetryTest;
 public interface WorkflowOneDecider {
 
   @Execute(name = SwfRetryTest.WORKFLOW_NAME_PREFIX + ".workflowOne", version = SwfRetryTest.DECIDER_VERSION)
-  void run();
+  Promise<Void> run();
 
   @Signal
   void proceed();
