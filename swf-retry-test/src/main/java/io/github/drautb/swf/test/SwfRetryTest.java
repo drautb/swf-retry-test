@@ -4,8 +4,8 @@ public final class SwfRetryTest {
 
   public static final String DOMAIN = "Samples";
 
-  public static final String DECIDER_VERSION = "1.0.24";
-  public static final String ACTIVITY_VERSION = "1.0.24";
+  public static final String DECIDER_VERSION = "1.0.26";
+  public static final String ACTIVITY_VERSION = "1.0.26";
 
   public static final int INITIAL_RETRY_INTERVAL_SECONDS = 10;
   public static final int MAX_ATTEMPTS = 4;

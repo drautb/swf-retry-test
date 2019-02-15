@@ -18,4 +18,9 @@ public interface Activity {
       exceptionsToRetry = RuntimeException.class)
   void spin();
 
+  @ExponentialRetry(initialRetryIntervalSeconds = SwfRetryTest.INITIAL_RETRY_INTERVAL_SECONDS,
+      maximumAttempts = SwfRetryTest.MAX_ATTEMPTS,
+      exceptionsToRetry = RuntimeException.class)
+  void signal();
+
 }

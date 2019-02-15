@@ -49,7 +49,9 @@ public class WorkflowOneDeciderImpl implements WorkflowOneDecider {
 
   @Asynchronous
   public void proceed() {
-    signalReceived.chain(Promise.Void());
+    if (!signalReceived.isReady()) {
+      signalReceived.chain(Promise.Void());
+    }
   }
 
 }

@@ -6,7 +6,6 @@ import com.amazonaws.services.simpleworkflow.flow.DecisionContextProviderImpl;
 import com.amazonaws.services.simpleworkflow.flow.WorkflowClock;
 import com.amazonaws.services.simpleworkflow.flow.annotations.Asynchronous;
 import com.amazonaws.services.simpleworkflow.flow.core.Promise;
-import com.amazonaws.services.simpleworkflow.model.UnknownResourceException;
 import io.github.drautb.swf.test.SwfRetryTest;
 import io.github.drautb.swf.test.api.*;
 
@@ -28,19 +27,17 @@ public class WorkflowTwoDeciderImpl implements WorkflowTwoDecider {
   public void run(boolean cancelWorkflowOne) {
     Promise<Void> started = waitAndStartWorkflowOne(cancelWorkflowOne, clock.createTimer(15));
     Promise<Void> spun = waitAndSpin(started);
-    waitAndSignal(spun);
+    Promise<Void> signaled = waitAndSignal(spun);
+    Promise<Void> spunAgain = waitAndSpin(signaled);
+    waitAndSignal(spunAgain);
   }
 
   @Asynchronous
   private Promise<Void> waitAndStartWorkflowOne(boolean cancelWorkflowOne, Promise<Void> waitFor) {
-    try {
+    if (cancelWorkflowOne) {
       workflowOneDeciderClientExternalFactory.getClient("drautb-test-workflow-one").requestCancelWorkflowExecution();
     }
-    catch (UnknownResourceException e) {
-      System.out.println(e);
-    }
 
-    workflowOneDeciderClientExternalFactory.getClient("drautb-test-workflow-one").run();
     return Promise.Void();
   }
 
@@ -50,8 +47,8 @@ public class WorkflowTwoDeciderImpl implements WorkflowTwoDecider {
   }
 
   @Asynchronous
-  private void waitAndSignal(Promise<Void> waitFor) {
-    workflowOneDeciderClientExternalFactory.getClient("drautb-test-workflow-one").proceed();
+  private Promise<Void> waitAndSignal(Promise<Void> waitFor) {
+    return activityClient.signal();
   }
 
 }
