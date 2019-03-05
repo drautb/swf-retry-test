@@ -20,7 +20,7 @@ public class WorkflowOneDeciderImpl implements WorkflowOneDecider {
   private DecisionContextProvider contextProvider = new DecisionContextProviderImpl();
   private WorkflowClock clock = contextProvider.getDecisionContext().getWorkflowClock();
 
-  private Promise<?> allDone;
+  private Promise<Void> allDone;
 
   public Promise<Void> run() {
     LOG.info("Starting workflow!");
