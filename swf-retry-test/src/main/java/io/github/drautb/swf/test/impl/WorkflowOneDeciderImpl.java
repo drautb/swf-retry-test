@@ -5,6 +5,7 @@ import com.amazonaws.services.simpleworkflow.flow.DecisionContextProviderImpl;
 import com.amazonaws.services.simpleworkflow.flow.WorkflowClock;
 import com.amazonaws.services.simpleworkflow.flow.annotations.Asynchronous;
 import com.amazonaws.services.simpleworkflow.flow.core.Promise;
+import com.amazonaws.services.simpleworkflow.flow.core.Settable;
 import com.amazonaws.services.simpleworkflow.flow.core.TryCatch;
 import io.github.drautb.swf.test.api.WorkflowOneDecider;
 import org.slf4j.Logger;
@@ -20,7 +21,7 @@ public class WorkflowOneDeciderImpl implements WorkflowOneDecider {
   private DecisionContextProvider contextProvider = new DecisionContextProviderImpl();
   private WorkflowClock clock = contextProvider.getDecisionContext().getWorkflowClock();
 
-  private Promise<Void> allDone;
+  private Settable<Void> allDone = new Settable<>();
 
   public Promise<Void> run() {
     LOG.info("Starting workflow!");
@@ -30,7 +31,7 @@ public class WorkflowOneDeciderImpl implements WorkflowOneDecider {
       protected void doTry() throws Throwable {
         Promise<Void> timer = clock.createTimer(5);
         Promise<Void> waitForTimer = waitForTimer(timer);
-        allDone = timerIsDone(waitForTimer);
+        allDone.chain(timerIsDone(waitForTimer));
       }
 
       @Override
