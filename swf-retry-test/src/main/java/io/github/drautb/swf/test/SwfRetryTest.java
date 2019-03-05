@@ -4,7 +4,7 @@ public final class SwfRetryTest {
 
   public static final String DOMAIN = "Samples";
 
-  public static final String DECIDER_VERSION = "1.0.26";
+  public static final String DECIDER_VERSION = "1.0.27";
   public static final String ACTIVITY_VERSION = "1.0.26";
 
   public static final int INITIAL_RETRY_INTERVAL_SECONDS = 10;

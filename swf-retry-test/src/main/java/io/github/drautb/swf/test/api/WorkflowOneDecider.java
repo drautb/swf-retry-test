@@ -1,7 +1,6 @@
 package io.github.drautb.swf.test.api;
 
 import com.amazonaws.services.simpleworkflow.flow.annotations.Execute;
-import com.amazonaws.services.simpleworkflow.flow.annotations.Signal;
 import com.amazonaws.services.simpleworkflow.flow.annotations.Workflow;
 import com.amazonaws.services.simpleworkflow.flow.annotations.WorkflowRegistrationOptions;
 import com.amazonaws.services.simpleworkflow.flow.core.Promise;
@@ -17,8 +16,5 @@ public interface WorkflowOneDecider {
 
   @Execute(name = SwfRetryTest.WORKFLOW_NAME_PREFIX + ".workflowOne", version = SwfRetryTest.DECIDER_VERSION)
   Promise<Void> run();
-
-  @Signal
-  void proceed();
 
 }

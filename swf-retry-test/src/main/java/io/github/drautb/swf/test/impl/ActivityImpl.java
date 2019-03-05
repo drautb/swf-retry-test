@@ -34,7 +34,7 @@ public class ActivityImpl implements Activity {
 
   public void signal() {
     try {
-      workflowOneDeciderClientExternalFactory.getClient("drautb-test-workflow-one").proceed();
+      //workflowOneDeciderClientExternalFactory.getClient("drautb-test-workflow-one").proceed();
     }
     catch (UnknownResourceException e) {
       // Error?

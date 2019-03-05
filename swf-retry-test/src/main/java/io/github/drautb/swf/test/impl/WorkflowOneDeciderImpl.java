@@ -4,54 +4,59 @@ import com.amazonaws.services.simpleworkflow.flow.DecisionContextProvider;
 import com.amazonaws.services.simpleworkflow.flow.DecisionContextProviderImpl;
 import com.amazonaws.services.simpleworkflow.flow.WorkflowClock;
 import com.amazonaws.services.simpleworkflow.flow.annotations.Asynchronous;
-import com.amazonaws.services.simpleworkflow.flow.core.OrPromise;
 import com.amazonaws.services.simpleworkflow.flow.core.Promise;
-import com.amazonaws.services.simpleworkflow.flow.core.Settable;
-import io.github.drautb.swf.test.api.ActivityClient;
-import io.github.drautb.swf.test.api.ActivityClientImpl;
+import com.amazonaws.services.simpleworkflow.flow.core.TryCatch;
 import io.github.drautb.swf.test.api.WorkflowOneDecider;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * @author drautb
  */
 public class WorkflowOneDeciderImpl implements WorkflowOneDecider {
 
-  private final ActivityClient activityClient = new ActivityClientImpl();
+  private static final Logger LOG = LoggerFactory.getLogger(WorkflowOneDeciderImpl.class);
 
   private DecisionContextProvider contextProvider = new DecisionContextProviderImpl();
   private WorkflowClock clock = contextProvider.getDecisionContext().getWorkflowClock();
 
-  private Settable<Void> signalReceived = new Settable<>();
+  private Promise<?> allDone;
 
   public Promise<Void> run() {
-    Promise<Void> timer = startDaemonTimer(300);
-    OrPromise signalOrTimer = new OrPromise(timer, signalReceived);
-    return processNextStep(signalOrTimer);
-  }
+    LOG.info("Starting workflow!");
 
-  @Asynchronous(daemon = true)
-  private Promise<Void> startDaemonTimer(int seconds) {
-    Promise<Void> timer = clock.createTimer(seconds);
-    return timer;
-  }
+    new TryCatch() { //NOSONAR This uses the SWF TryCatch pattern correctly
+      @Override
+      protected void doTry() throws Throwable {
+        Promise<Void> timer = clock.createTimer(5);
+        Promise<Void> waitForTimer = waitForTimer(timer);
+        allDone = timerIsDone(waitForTimer);
+      }
 
+      @Override
+      protected void doCatch(Throwable e) throws Throwable {
+        LOG.error("Error in doTry", e);
+      }
+    };
 
-  @Asynchronous
-  private Promise<Void> processNextStep(Promise<?> waitFor) {
-    if (!signalReceived.isReady()) {
-      // No signal was received, so skip everything and finish now.
-      return Promise.Void();
-    }
-
-    // Otherwise, continue with the rest of the workflow.
-    return activityClient.spin();
+    return finished(allDone);
   }
 
   @Asynchronous
-  public void proceed() {
-    if (!signalReceived.isReady()) {
-      signalReceived.chain(Promise.Void());
-    }
+  private Promise<Void> waitForTimer(Promise<?> waitFor) {
+    return Promise.Void();
   }
+
+  @Asynchronous
+  public Promise<Void> timerIsDone(Promise<?> waitFor) {
+    return Promise.Void();
+  }
+
+  @Asynchronous
+  public Promise<Void> finished(Promise<?> waitFor) {
+    LOG.info("Exiting workflow! Promise value: {}", waitFor);
+    return Promise.Void();
+  }
+
 
 }
