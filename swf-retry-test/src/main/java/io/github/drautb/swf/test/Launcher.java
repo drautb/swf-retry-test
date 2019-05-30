@@ -9,13 +9,15 @@ import io.github.drautb.swf.test.impl.ActivityImpl;
 import io.github.drautb.swf.test.impl.DynamicClientDeciderImpl;
 import io.github.drautb.swf.test.impl.WorkflowOneDeciderImpl;
 import io.github.drautb.swf.test.impl.WorkflowTwoDeciderImpl;
+import org.springframework.boot.Banner;
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
 
-import javax.servlet.ServletContextEvent;
-import javax.servlet.ServletContextListener;
-import javax.servlet.annotation.WebListener;
+import javax.annotation.PostConstruct;
+import javax.annotation.PreDestroy;
 
-@WebListener
-public class Launcher implements ServletContextListener {
+@SpringBootApplication
+public class Launcher {
 
   private WorkflowWorker dynamicClientWorker;
   private WorkflowWorker workflowOneWorker;
@@ -23,7 +25,14 @@ public class Launcher implements ServletContextListener {
 
   private ActivityWorker activityWorker;
 
-  public void contextInitialized(ServletContextEvent event) {
+  public static void main(String[] args) {
+    SpringApplication app = new SpringApplication(Launcher.class);
+    app.setBannerMode(Banner.Mode.OFF);
+    app.run(args);
+  }
+
+  @PostConstruct
+  public void launch() {
     AmazonSimpleWorkflow swfClient = AmazonSimpleWorkflowClientBuilder.standard().withRegion(Regions.US_EAST_1).build();
 
     dynamicClientWorker = new WorkflowWorker(swfClient, SwfRetryTest.DOMAIN, getDeciderTaskList("dynamic"));
@@ -50,7 +59,8 @@ public class Launcher implements ServletContextListener {
     activityWorker.start();
   }
 
-  public void contextDestroyed(ServletContextEvent event) {
+  @PreDestroy
+  public void shutdown() {
     dynamicClientWorker.shutdownNow();
     workflowOneWorker.shutdownNow();
     workflowTwoWorker.shutdownNow();
