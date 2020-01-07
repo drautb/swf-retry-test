@@ -2,8 +2,6 @@ package io.github.drautb.swf.test.impl;
 
 import com.amazonaws.services.dynamodbv2.*;
 import com.amazonaws.services.simpleworkflow.AmazonSimpleWorkflowClientBuilder;
-import com.amazonaws.services.simpleworkflow.flow.ActivityExecutionContext;
-import com.amazonaws.services.simpleworkflow.flow.ActivityExecutionContextProviderImpl;
 import com.amazonaws.services.simpleworkflow.model.UnknownResourceException;
 import io.github.drautb.swf.test.SwfRetryTest;
 import io.github.drautb.swf.test.api.Activity;
@@ -11,7 +9,6 @@ import io.github.drautb.swf.test.api.WorkflowOneDeciderClientExternalFactory;
 import io.github.drautb.swf.test.api.WorkflowOneDeciderClientExternalFactoryImpl;
 import org.familysearch.paas.sps.common.annotations.AdaptExceptionForSwf;
 
-import java.util.Optional;
 import java.util.concurrent.TimeUnit;
 
 @AdaptExceptionForSwf

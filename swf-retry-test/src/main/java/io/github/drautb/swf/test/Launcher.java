@@ -5,10 +5,7 @@ import com.amazonaws.services.simpleworkflow.AmazonSimpleWorkflow;
 import com.amazonaws.services.simpleworkflow.AmazonSimpleWorkflowClientBuilder;
 import com.amazonaws.services.simpleworkflow.flow.ActivityWorker;
 import com.amazonaws.services.simpleworkflow.flow.WorkflowWorker;
-import io.github.drautb.swf.test.impl.ActivityImpl;
-import io.github.drautb.swf.test.impl.DynamicClientDeciderImpl;
-import io.github.drautb.swf.test.impl.WorkflowOneDeciderImpl;
-import io.github.drautb.swf.test.impl.WorkflowTwoDeciderImpl;
+import io.github.drautb.swf.test.impl.*;
 import org.springframework.boot.Banner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -22,6 +19,7 @@ public class Launcher {
   private WorkflowWorker dynamicClientWorker;
   private WorkflowWorker workflowOneWorker;
   private WorkflowWorker workflowTwoWorker;
+  private WorkflowWorker childWorkflowWorker;
 
   private ActivityWorker activityWorker;
 
@@ -38,6 +36,7 @@ public class Launcher {
     dynamicClientWorker = new WorkflowWorker(swfClient, SwfRetryTest.DOMAIN, getDeciderTaskList("dynamic"));
     workflowOneWorker = new WorkflowWorker(swfClient, SwfRetryTest.DOMAIN, getDeciderTaskList("workflow-1"));
     workflowTwoWorker = new WorkflowWorker(swfClient, SwfRetryTest.DOMAIN, getDeciderTaskList("workflow-2"));
+    childWorkflowWorker = new WorkflowWorker(swfClient, SwfRetryTest.DOMAIN, getDeciderTaskList("child-workflow"));
 
     activityWorker = new ActivityWorker(swfClient, SwfRetryTest.DOMAIN, getActivityTaskList());
 
@@ -45,6 +44,7 @@ public class Launcher {
       dynamicClientWorker.addWorkflowImplementationType(DynamicClientDeciderImpl.class);
       workflowOneWorker.addWorkflowImplementationType(WorkflowOneDeciderImpl.class);
       workflowTwoWorker.addWorkflowImplementationType(WorkflowTwoDeciderImpl.class);
+      childWorkflowWorker.addWorkflowImplementationType(ChildWorkflowDeciderImpl.class);
 
       activityWorker.addActivitiesImplementation(new ActivityImpl());
     }
@@ -55,6 +55,7 @@ public class Launcher {
     dynamicClientWorker.start();
     workflowOneWorker.start();
     workflowTwoWorker.start();
+    childWorkflowWorker.start();
 
     activityWorker.start();
   }
@@ -64,6 +65,7 @@ public class Launcher {
     dynamicClientWorker.shutdownNow();
     workflowOneWorker.shutdownNow();
     workflowTwoWorker.shutdownNow();
+    childWorkflowWorker.shutdownNow();
 
     activityWorker.shutdownNow();
   }

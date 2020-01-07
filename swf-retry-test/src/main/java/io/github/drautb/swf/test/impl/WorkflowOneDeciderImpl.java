@@ -1,9 +1,15 @@
 package io.github.drautb.swf.test.impl;
 
+import com.amazonaws.services.simpleworkflow.flow.DynamicWorkflowClient;
+import com.amazonaws.services.simpleworkflow.flow.DynamicWorkflowClientImpl;
+import com.amazonaws.services.simpleworkflow.flow.StartWorkflowOptions;
 import com.amazonaws.services.simpleworkflow.flow.annotations.Asynchronous;
 import com.amazonaws.services.simpleworkflow.flow.core.Promise;
 import com.amazonaws.services.simpleworkflow.flow.core.Settable;
 import com.amazonaws.services.simpleworkflow.flow.core.TryCatch;
+import com.amazonaws.services.simpleworkflow.model.WorkflowExecution;
+import com.amazonaws.services.simpleworkflow.model.WorkflowType;
+import io.github.drautb.swf.test.SwfRetryTest;
 import io.github.drautb.swf.test.api.ActivityClient;
 import io.github.drautb.swf.test.api.ActivityClientImpl;
 import io.github.drautb.swf.test.api.WorkflowOneDecider;
@@ -17,27 +23,15 @@ public class WorkflowOneDeciderImpl implements WorkflowOneDecider {
 
   private static final Logger LOG = LoggerFactory.getLogger(WorkflowOneDeciderImpl.class);
 
-  private ActivityClient activityClient = new ActivityClientImpl();
-
-  private Settable<Void> allDone = new Settable<>();
-
   public Promise<Void> run() {
     LOG.info("Starting workflow!");
 
-    new TryCatch() { //NOSONAR This uses the SWF TryCatch pattern correctly
-      @Override
-      protected void doTry() throws Throwable {
-        Promise<Void> doneWaiting = activityClient.spin();
-        allDone.chain(doneWaiting);
-      }
+    DynamicWorkflowClient client = new DynamicWorkflowClientImpl(
+            new WorkflowExecution().withWorkflowId("child-workflow-id"),
+            new WorkflowType().withName(SwfRetryTest.WORKFLOW_NAME_PREFIX + ".childWorkflow").withVersion(SwfRetryTest.DECIDER_VERSION));
+    Promise<?> result = client.startWorkflowExecution(new Object[]{}, null, String.class);
 
-      @Override
-      protected void doCatch(Throwable e) throws Throwable {
-        LOG.error("Error in doTry", e);
-      }
-    };
-
-    return finished(allDone);
+    return finished(result);
   }
 
   @Asynchronous
