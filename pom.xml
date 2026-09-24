@@ -31,7 +31,7 @@
     <aws-swf-build-tools.version>1.0</aws-swf-build-tools.version>
     <aws-java-sdk.version>1.11.49</aws-java-sdk.version>
     <aws-java-sdk-swf-libraries.version>1.11.22</aws-java-sdk-swf-libraries.version>
-    <freemarker.version>2.3.23</freemarker.version>
+    <freemarker.version>2.3.35</freemarker.version>
     <maven-compiler-plugin.version>3.6.1</maven-compiler-plugin.version>
     <paas-sps-common.version>9.0.b254</paas-sps-common.version>
   </properties>
